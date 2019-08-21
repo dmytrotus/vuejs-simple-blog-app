@@ -28,7 +28,7 @@
 
 <script>
 
-import axios from 'axios';
+import Axios from 'axios';
 
 	export default {
 		data() {
@@ -46,7 +46,24 @@ import axios from 'axios';
 			registerUser() {
 
 				//console.log(this.name, this.email, this.password);
-				//Axios.post
+				Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register', {
+					name: this.name,
+					email: this.email,
+					password: this.password
+				}).then( (response) => {
+
+					//console.log(response)
+					const {data } = response.data;
+
+					localStorage.setItem('auth', JSON.stringify(data))
+
+					this.$root.auth = data;
+
+					this.$router.push('home');
+
+				}).catch(error => {
+					console.log(error);
+				});
 			}	
 		}
 	}
