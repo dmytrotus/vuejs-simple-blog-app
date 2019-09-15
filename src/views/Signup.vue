@@ -9,12 +9,27 @@
 				<h3 class="text-center my-4">Sign Up</h3>
 				<div class="form-group">
 					<input v-model="name" placeholder="name" type="text" class="form-control">
+					<div class="errors" v-if="errors.name">
+						<small class="text-danger" :key="error" v-for="error in errors.name">
+							{{ error }}
+						</small>
+					</div>
 				</div>
 				<div class="form-group">
 					<input v-model="email" placeholder="e-mail" type="text" class="form-control">
+					<div class="errors" v-if="errors.email">
+						<small class="text-danger" :key="error" v-for="error in errors.email">
+							{{ error }}
+						</small>
+					</div>
 				</div>
 				<div class="form-group">
 					<input v-model="password" placeholder="password" type="password" class="form-control">
+					<div class="errors" v-if="errors.password">
+						<small class="text-danger" :key="error" v-for="error in errors.password">
+							{{ error }}
+						</small>
+					</div>
 				</div>
 				<div class="form-group text-center">
 					<button @click="registerUser()" class="btn btn-success form-control">Sign Up</button>
@@ -36,7 +51,8 @@ import Axios from 'axios';
 
 				name: '',
 				email: '',
-				password: ''
+				password: '',
+				errors: {}
 
 			}
 		},
@@ -46,24 +62,40 @@ import Axios from 'axios';
 			registerUser() {
 
 				//console.log(this.name, this.email, this.password);
-				Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register', {
+				Axios.post('http://laraveltestproject/api/vuejsapi', {
 					name: this.name,
 					email: this.email,
 					password: this.password
 				}).then( (response) => {
 
-					//console.log(response)
-					const {data } = response.data;
 
-					localStorage.setItem('auth', JSON.stringify(data))
+					localStorage.setItem('auth', JSON.stringify(response.data));
 
-					this.$root.auth = data;
+					this.$root.auth = response.data;
 
 					this.$router.push('home');
 
-				}).catch(error => {
-					console.log(error);
-				});
+					//console.log(response);
+					//const {data } = response.data;
+
+					//localStorage.setItem('auth', JSON.stringify(data))
+
+					//this.$root.auth = data;
+
+					
+
+				}).then(response => {
+					//console.log(response);
+				}).catch( ({response})  => {
+					//console.log(error);
+				})
+
+
+				/*.catch( ({response})  => {
+					//console.log(error);
+
+					this.errors = response.data;
+				});*/
 			}	
 		}
 	}

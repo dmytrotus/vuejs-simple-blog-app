@@ -11,6 +11,8 @@ new Vue({
 	router,
 
 	data: {
+
+		//auth:{}
 		auth: authData ? JSON.parse(authData) : {}
 	},
   render: h => h(App),
